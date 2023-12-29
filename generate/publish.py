@@ -5,7 +5,18 @@ from bazelrio_gentool.utils import TEMPLATE_BASE_DIR
 
 
 def main():
-    raise
+    SCRIPT_DIR = os.environ["BUILD_WORKSPACE_DIRECTORY"]
+    registry_location = os.path.join(
+        SCRIPT_DIR, "..", "..", "..", "bazel-central-registry"
+    )
+
+    group = get_toolchain_dependencies()
+
+    module_template = os.path.join(SCRIPT_DIR, "templates", "MODULE.bazel.jinja2")
+    module_json_template = None
+
+    os.chdir(SCRIPT_DIR)
+    publish_module(registry_location, group, module_json_template, module_template)
 
 
 if __name__ == "__main__":

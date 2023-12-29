@@ -15,6 +15,25 @@ def get_toolchain_dependencies():
         def get_url(self):
             return f"https://github.com/adoptium/temurin17-binaries/releases/download/jdk-{escaped_version}/OpenJDK17U-jdk_x64_{self.repo_os}_hotspot_{underscore_version}.{self.suffix}"
 
+    class JavaToolchainConfig:
+        def __init__(
+            self,
+            repo_name,
+            platforms,
+            jdk_version,
+            escaped_version,
+            underscore_version,
+            jre_version,
+        ):
+            self.repo_name = repo_name
+            self.platforms = platforms
+            self.jdk_version = jdk_version
+            self.escaped_version = escaped_version
+            self.underscore_version = underscore_version
+            self.version = jdk_version
+            self.sanitized_version = jdk_version
+            self.patch = ""
+
     platforms = []
 
     jdk_version = "17.0.8+7"
@@ -46,7 +65,7 @@ def get_toolchain_dependencies():
         )
     )
 
-    output = dict(
+    output = JavaToolchainConfig(
         repo_name="rules_bzlmodrio_jdk",
         platforms=platforms,
         jdk_version=jdk_version,
