@@ -1,7 +1,3 @@
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
-load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-
-# load("@bazel_tools//tools/jdk:remote_java_repository.bzl", "remote_java_repository")
 load("@rules_java//toolchains:remote_java_repository.bzl", "remote_java_repository")
 
 def __setup_jdk_dependencies(mctx):
@@ -39,14 +35,6 @@ def __setup_jdk_dependencies(mctx):
         urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.4.1%2B1/OpenJDK17U-jdk_x64_windows_hotspot_17.0.4.1_1.zip"],
         sha256 = "3860d2ed7405674baeb0f9f4c71377421716759fe4301e92bdd4dd43c0442dc3",
         strip_prefix = "jdk-17.0.4.1+1",
-    )
-
-    maybe(
-        http_file,
-        "roborio_jre",
-        url = "https://github.com/wpilibsuite/frc-openjdk-roborio/releases/download/v2023-17.0.5u7-1/frc2023-openjdk-17-jre_17.0.5u7-1_cortexa9-vfpv3.ipk",
-        sha256 = "d9003bcdaa8da0d4e1631f0dc6172495a93894d48c68b7f6cefbf4a05a0a67f2",
-        downloaded_file_path = "roborio_jre",
     )
 
 def setup_legacy_setup_jdk_dependencies():

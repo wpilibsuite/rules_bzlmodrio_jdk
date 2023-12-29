@@ -8,7 +8,6 @@ bazel_dep(name = "platforms", version = "0.0.8")
 bazel_dep(name = "rules_java", version = "7.1.0")
 
 deps = use_extension("//:maven_deps.bzl", "deps")
-use_repo(deps, "roborio_jre")
 
 bazel_dep(name = "rules_bzlmodrio_toolchains", version = "2024-1")
 
@@ -17,8 +16,6 @@ REMOTE_JDK_REPOS = [
     "roboriojdk_mac",
     "roboriojdk_win",
 ]
-
-print(REMOTE_JDK_REPOS)
 
 [use_repo(
     deps,

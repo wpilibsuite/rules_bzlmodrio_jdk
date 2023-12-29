@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 3,
-  "moduleFileHash": "9854a4262dd7f7e150a037e908bbace434e4c92d19508d38b2bb7e643c69b4cd",
+  "moduleFileHash": "fb8b38dd2277f3abe42417b01a741a67c3235236cbb44704ad4bd3341e972bfe",
   "flags": {
     "cmdRegistries": [
       "https://raw.githubusercontent.com/pjreiniger/bazel-central-registry/bzlmodrio/"
@@ -38,7 +38,6 @@
             "column": 21
           },
           "imports": {
-            "roborio_jre": "roborio_jre",
             "roboriojdk_linux": "roboriojdk_linux",
             "roboriojdk_linux_toolchain_config_repo": "roboriojdk_linux_toolchain_config_repo",
             "roboriojdk_mac": "roboriojdk_mac",

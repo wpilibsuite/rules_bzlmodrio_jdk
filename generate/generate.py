@@ -43,9 +43,6 @@ def main():
         template_files,
         REPO_DIR,
         os.path.join(SCRIPT_DIR, "templates"),
-        # group=group,
-        # repos=repos,
-        # libraries=libraries,
         bazel_dependencies=get_bazel_dependencies(),
         mandatory_dependencies=mandatory_dependencies,
     )

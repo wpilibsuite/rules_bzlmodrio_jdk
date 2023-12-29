@@ -13,7 +13,7 @@
     "compatibilityMode": "ERROR"
   },
   "localOverrideHashes": {
-    "rules_bzlmodrio_jdk": "9854a4262dd7f7e150a037e908bbace434e4c92d19508d38b2bb7e643c69b4cd",
+    "rules_bzlmodrio_jdk": "fb8b38dd2277f3abe42417b01a741a67c3235236cbb44704ad4bd3341e972bfe",
     "bazel_tools": "922ea6752dc9105de5af957f7a99a6933c0a6a712d23df6aad16a9c399f7e787"
   },
   "moduleDepGraph": {
@@ -104,7 +104,6 @@
             "column": 21
           },
           "imports": {
-            "roborio_jre": "roborio_jre",
             "roboriojdk_linux": "roboriojdk_linux",
             "roboriojdk_linux_toolchain_config_repo": "roboriojdk_linux_toolchain_config_repo",
             "roboriojdk_mac": "roboriojdk_mac",
@@ -1559,7 +1558,7 @@
     },
     "@@rules_bzlmodrio_jdk~override//:maven_deps.bzl%deps": {
       "general": {
-        "bzlTransitiveDigest": "a9HbQmOWLHk7Ia5iKerCna8/LQiAO3y2wJUQVJ0U4JI=",
+        "bzlTransitiveDigest": "V76dIct0qhEmDZZx6qWRJkW2PQARuCjrCTDPAOK4Xw0=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -1603,16 +1602,6 @@
             "attributes": {
               "name": "rules_bzlmodrio_jdk~override~deps~roboriojdk_win_toolchain_config_repo",
               "build_file": "\nconfig_setting(\n    name = \"prefix_version_setting\",\n    values = {\"java_runtime_version\": \"roboriojdk_17\"},\n    visibility = [\"//visibility:private\"],\n)\nconfig_setting(\n    name = \"version_setting\",\n    values = {\"java_runtime_version\": \"17\"},\n    visibility = [\"//visibility:private\"],\n)\nalias(\n    name = \"version_or_prefix_version_setting\",\n    actual = select({\n        \":version_setting\": \":version_setting\",\n        \"//conditions:default\": \":prefix_version_setting\",\n    }),\n    visibility = [\"//visibility:private\"],\n)\ntoolchain(\n    name = \"toolchain\",\n    target_compatible_with = [\"@platforms//os:windows\"],\n    target_settings = [\":version_or_prefix_version_setting\"],\n    toolchain_type = \"@bazel_tools//tools/jdk:runtime_toolchain_type\",\n    toolchain = \"@roboriojdk_win//:jdk\",\n)\ntoolchain(\n    name = \"bootstrap_runtime_toolchain\",\n    # These constraints are not required for correctness, but prevent fetches of remote JDK for\n    # different architectures. As every Java compilation toolchain depends on a bootstrap runtime in\n    # the same configuration, this constraint will not result in toolchain resolution failures.\n    exec_compatible_with = [\"@platforms//os:windows\"],\n    target_settings = [\":version_or_prefix_version_setting\"],\n    toolchain_type = \"@bazel_tools//tools/jdk:bootstrap_runtime_toolchain_type\",\n    toolchain = \"@roboriojdk_win//:jdk\",\n)\n"
-            }
-          },
-          "roborio_jre": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_bzlmodrio_jdk~override~deps~roborio_jre",
-              "url": "https://github.com/wpilibsuite/frc-openjdk-roborio/releases/download/v2023-17.0.5u7-1/frc2023-openjdk-17-jre_17.0.5u7-1_cortexa9-vfpv3.ipk",
-              "sha256": "d9003bcdaa8da0d4e1631f0dc6172495a93894d48c68b7f6cefbf4a05a0a67f2",
-              "downloaded_file_path": "roborio_jre"
             }
           },
           "roboriojdk_linux": {
