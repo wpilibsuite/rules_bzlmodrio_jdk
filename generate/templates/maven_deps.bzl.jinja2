@@ -1,0 +1,30 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
+
+def __setup_jdk_dependencies(mctx):
+    {%- for config in group.configs %}
+    # {{config.short_name}}
+    {%- for platform_config in config.cpp_platform_configs %}
+    maybe(
+        http_archive,
+        "bazelrio_{{config.short_name_underscore}}_toolchain_{{platform_config.os}}",
+        url = "{{config.get_cpp_url(platform_config)}}",
+        sha256 = "{{config.get_cpp_sha256(platform_config)}}",
+        build_file_content = filegroup_all,
+        {%- if platform_config.patch_toolchain %}
+        patches = [
+            "@bazelrio//libraries/toolchains/{{config.year}}/{{config.release_version_underscore}}/patches:libc_no_sandboxfs.patch",
+            "@bazelrio//libraries/toolchains/{{config.year}}/{{config.release_version_underscore}}/patches:libpthread_no_sandboxfs.patch",
+        ],
+        {%- endif %}
+    )
+    {%- endfor %}
+    {%- endfor %}
+
+def setup_legacy_setup_jdk_dependencies():
+    __setup_jdk_dependencies(None)
+
+deps = module_extension(
+    __setup_jdk_dependencies,
+)
+

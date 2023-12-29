@@ -1,0 +1,29 @@
+module(
+    name = "rules_bzlmodrio_jdk",
+    version = "0.0.0",
+    compatibility_level = 2024,
+)
+
+{{bazel_dependencies.platforms.module_dep()}}
+{{bazel_dependencies.rules_java.module_dep()}}
+
+deps = use_extension("//:maven_deps.bzl", "deps")
+use_repo(deps, "roborio_jre")
+
+{{ mandatory_dependencies.rules_bzlmodrio_toolchain.module_dep() }}
+
+REMOTE_JDK_REPOS = [
+    "roboriojdk_linux",
+    "roboriojdk_mac",
+    "roboriojdk_win",
+]
+
+print(REMOTE_JDK_REPOS)
+
+[use_repo(
+    deps,
+    repo,
+    repo + "_toolchain_config_repo",
+) for repo in REMOTE_JDK_REPOS]
+
+[register_toolchains("@" + name + "_toolchain_config_repo//:all") for name in REMOTE_JDK_REPOS]
