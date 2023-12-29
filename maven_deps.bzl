@@ -8,9 +8,9 @@ def __setup_jdk_dependencies(mctx):
         target_compatible_with = [
             "@platforms//os:linux",
         ],
-        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.4.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.4.1_1.tar.gz"],
-        sha256 = "5fbf8b62c44f10be2efab97c5f5dbf15b74fae31e451ec10abbc74e54a04ff44",
-        strip_prefix = "jdk-17.0.4.1+1",
+        sha256 = "aa5fc7d388fe544e5d85902e68399d5299e931f9b280d358a3cbee218d6017b0",
+        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.8%2B7/OpenJDK17U-jdk_x64_linux_hotspot_17.0.8_7.tar.gz"],
+        strip_prefix = "jdk-17.0.8+7",
     )
 
     remote_java_repository(
@@ -20,27 +20,27 @@ def __setup_jdk_dependencies(mctx):
         target_compatible_with = [
             "@platforms//os:macos",
         ],
-        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.4.1%2B1/OpenJDK17U-jdk_x64_mac_hotspot_17.0.4.1_1.tar.gz"],
-        sha256 = "ac21a5a87f7cfa00212ab7c41f7eb80ca33640d83b63ad850be811c24095d61a",
-        strip_prefix = "jdk-17.0.4.1+1/Contents/Home",
+        sha256 = "6fea89cea64a0f56ecb9e5d746b4921d2b0a80aa65c92b265ee9db52b44f4d93",
+        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.8%2B7/OpenJDK17U-jdk_x64_mac_hotspot_17.0.8_7.tar.gz"],
+        strip_prefix = "jdk-17.0.8+7/Contents/Home",
     )
 
     remote_java_repository(
-        name = "roboriojdk_win",
+        name = "roboriojdk_windows",
         prefix = "roboriojdk",
         version = "17",
         target_compatible_with = [
             "@platforms//os:windows",
         ],
-        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.4.1%2B1/OpenJDK17U-jdk_x64_windows_hotspot_17.0.4.1_1.zip"],
-        sha256 = "3860d2ed7405674baeb0f9f4c71377421716759fe4301e92bdd4dd43c0442dc3",
-        strip_prefix = "jdk-17.0.4.1+1",
+        sha256 = "341a7243778802019a100ba7ae32a05a3f4ae5fd64dbf2a970d02f07c7d1c804",
+        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.8%2B7/OpenJDK17U-jdk_x64_windows_hotspot_17.0.8_7.zip"],
+        strip_prefix = "jdk-17.0.8+7",
     )
 
 def setup_legacy_setup_jdk_dependencies():
     __setup_jdk_dependencies(None)
 
-    REMOTE_JDK_REPOS = ["roboriojdk_linux", "roboriojdk_mac", "roboriojdk_win"]
+    REMOTE_JDK_REPOS = ["roboriojdk_linux", "roboriojdk_mac", "roboriojdk_windows"]
     [native.register_toolchains("@" + name + "_toolchain_config_repo//:all") for name in REMOTE_JDK_REPOS]
 
 deps = module_extension(

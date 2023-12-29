@@ -1,28 +1,27 @@
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
+load("@rules_java//toolchains:remote_java_repository.bzl", "remote_java_repository")
+
 
 def __setup_jdk_dependencies(mctx):
-    {%- for config in group.configs %}
-    # {{config.short_name}}
-    {%- for platform_config in config.cpp_platform_configs %}
-    maybe(
-        http_archive,
-        "bazelrio_{{config.short_name_underscore}}_toolchain_{{platform_config.os}}",
-        url = "{{config.get_cpp_url(platform_config)}}",
-        sha256 = "{{config.get_cpp_sha256(platform_config)}}",
-        build_file_content = filegroup_all,
-        {%- if platform_config.patch_toolchain %}
-        patches = [
-            "@bazelrio//libraries/toolchains/{{config.year}}/{{config.release_version_underscore}}/patches:libc_no_sandboxfs.patch",
-            "@bazelrio//libraries/toolchains/{{config.year}}/{{config.release_version_underscore}}/patches:libpthread_no_sandboxfs.patch",
+    {%- for platform in group.platforms %}
+    remote_java_repository(
+        name = "roboriojdk_{{platform.repo_os}}",
+        prefix = "roboriojdk",
+        version = "{{group.jre_version}}",
+        target_compatible_with = [
+            "@platforms//os:{{platform.platforms_os}}",
         ],
-        {%- endif %}
+        sha256 = "{{platform.get_sha256()}}",
+        urls = ["{{platform.get_url()}}"],
+        strip_prefix = "{{platform.strip_prefix}}",
     )
-    {%- endfor %}
-    {%- endfor %}
+    {% endfor %}
 
 def setup_legacy_setup_jdk_dependencies():
     __setup_jdk_dependencies(None)
+
+    REMOTE_JDK_REPOS = ["roboriojdk_linux", "roboriojdk_mac", "roboriojdk_windows"]
+    [native.register_toolchains("@" + name + "_toolchain_config_repo//:all") for name in REMOTE_JDK_REPOS]
+
 
 deps = module_extension(
     __setup_jdk_dependencies,

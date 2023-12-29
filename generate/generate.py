@@ -14,6 +14,7 @@ from bazelrio_gentool.generate_module_project_files import (
 )
 from bazelrio_gentool.generate_shared_files import get_bazel_dependencies
 from bazelrio_gentool.cli import add_generic_cli, GenericCliArgs
+from get_toolchain_dependencies import get_toolchain_dependencies
 import argparse
 import os
 
@@ -26,13 +27,15 @@ def main():
     add_generic_cli(parser)
     args = parser.parse_args()
 
+    group = get_toolchain_dependencies()
+
     mandatory_dependencies = create_default_mandatory_settings(GenericCliArgs(args))
 
-    write_shared_root_files(REPO_DIR, dict(repo_name="rules_bzlmodrio_jdk"))
-    write_shared_test_files(REPO_DIR, dict())
+    write_shared_root_files(REPO_DIR, group)
+    write_shared_test_files(REPO_DIR, group)
 
     template_files = [
-        # "templates/maven_deps.bzl",
+        "maven_deps.bzl",
         "WORKSPACE",
         "MODULE.bazel",
         "tests/WORKSPACE",
@@ -45,6 +48,7 @@ def main():
         os.path.join(SCRIPT_DIR, "templates"),
         bazel_dependencies=get_bazel_dependencies(),
         mandatory_dependencies=mandatory_dependencies,
+        group=group,
     )
 
 

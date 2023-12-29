@@ -2,7 +2,7 @@ from get_toolchain_dependencies import get_toolchain_dependencies
 
 
 def main():
-    raise
+    print(get_toolchain_dependencies()["jdk_version"])
 
 
 if __name__ == "__main__":

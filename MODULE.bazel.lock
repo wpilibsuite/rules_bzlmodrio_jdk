@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 3,
-  "moduleFileHash": "fb8b38dd2277f3abe42417b01a741a67c3235236cbb44704ad4bd3341e972bfe",
+  "moduleFileHash": "539d332b1e44cdc7d7069e5c24c49fb3cc90fe50e932427a7d678fb79ef2f371",
   "flags": {
     "cmdRegistries": [
       "https://raw.githubusercontent.com/pjreiniger/bazel-central-registry/bzlmodrio/"
@@ -18,14 +18,14 @@
   "moduleDepGraph": {
     "<root>": {
       "name": "rules_bzlmodrio_jdk",
-      "version": "0.0.0",
+      "version": "17.0.8+7",
       "key": "<root>",
       "repoName": "rules_bzlmodrio_jdk",
       "executionPlatformsToRegister": [],
       "toolchainsToRegister": [
         "@roboriojdk_linux_toolchain_config_repo//:all",
         "@roboriojdk_mac_toolchain_config_repo//:all",
-        "@roboriojdk_win_toolchain_config_repo//:all"
+        "@roboriojdk_windows_toolchain_config_repo//:all"
       ],
       "extensionUsages": [
         {
@@ -42,8 +42,8 @@
             "roboriojdk_linux_toolchain_config_repo": "roboriojdk_linux_toolchain_config_repo",
             "roboriojdk_mac": "roboriojdk_mac",
             "roboriojdk_mac_toolchain_config_repo": "roboriojdk_mac_toolchain_config_repo",
-            "roboriojdk_win": "roboriojdk_win",
-            "roboriojdk_win_toolchain_config_repo": "roboriojdk_win_toolchain_config_repo"
+            "roboriojdk_windows": "roboriojdk_windows",
+            "roboriojdk_windows_toolchain_config_repo": "roboriojdk_windows_toolchain_config_repo"
           },
           "devImports": [],
           "tags": [],
