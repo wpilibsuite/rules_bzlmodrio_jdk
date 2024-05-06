@@ -33,7 +33,7 @@ py_binary(
     srcs = ["get_version.py"],
     visibility = ["//visibility:public"],
     deps = [
-        # ":get_toolchain_dependencies",
+        ":get_toolchain_dependencies",
         "@bzlmodrio-gentool//bazelrio_gentool",
     ],
 )
