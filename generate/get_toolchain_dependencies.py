@@ -3,7 +3,9 @@ from bazelrio_gentool.deps.sha256_helper import get_hash
 
 def get_toolchain_dependencies():
     class PlatformConfig:
-        def __init__(self, repo_os, repo_cpu, platforms_os, platforms_cpu, strip_prefix, suffix):
+        def __init__(
+            self, repo_os, repo_cpu, platforms_os, platforms_cpu, strip_prefix, suffix
+        ):
             self.repo_os = repo_os
             self.repo_cpu = repo_cpu
             self.platforms_os = platforms_os
