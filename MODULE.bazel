@@ -4,8 +4,8 @@ module(
     compatibility_level = 2024,
 )
 
-bazel_dep(name = "platforms", version = "0.0.8")
-bazel_dep(name = "rules_java", version = "7.1.0")
+bazel_dep(name = "platforms", version = "0.0.9")
+bazel_dep(name = "rules_java", version = "7.5.0")
 
 deps = use_extension("//:maven_deps.bzl", "deps")
 

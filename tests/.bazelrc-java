@@ -2,3 +2,4 @@
 build --javacopt=-Xlint:all,-processing
 
 common --java_language_version=17
+common --java_runtime_version=roboriojdk_17

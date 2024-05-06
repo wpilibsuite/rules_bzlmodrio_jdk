@@ -3,8 +3,9 @@ from bazelrio_gentool.deps.sha256_helper import get_hash
 
 def get_toolchain_dependencies():
     class PlatformConfig:
-        def __init__(self, repo_os, platforms_os, strip_prefix, suffix):
+        def __init__(self, repo_os, platforms_os, strip_prefix, suffix, repo_cpu = "x64"):
             self.repo_os = repo_os
+            self.repo_cpu = repo_cpu
             self.platforms_os = platforms_os
             self.strip_prefix = strip_prefix
             self.suffix = suffix
@@ -13,7 +14,7 @@ def get_toolchain_dependencies():
             return get_hash(self.get_url(), fail_on_miss=True)
 
         def get_url(self):
-            return f"https://github.com/adoptium/temurin17-binaries/releases/download/jdk-{escaped_version}/OpenJDK17U-jdk_x64_{self.repo_os}_hotspot_{underscore_version}.{self.suffix}"
+            return f"https://github.com/adoptium/temurin17-binaries/releases/download/jdk-{escaped_version}/OpenJDK17U-jdk_{self.repo_cpu}_{self.repo_os}_hotspot_{underscore_version}.{self.suffix}"
 
     class JavaToolchainConfig:
         def __init__(
@@ -52,7 +53,25 @@ def get_toolchain_dependencies():
     )
     platforms.append(
         PlatformConfig(
+            repo_os="linux",
+            repo_cpu="aarch64",
+            platforms_os="aarch64",
+            strip_prefix="jdk-" + jdk_version,
+            suffix="tar.gz",
+        )
+    )
+    platforms.append(
+        PlatformConfig(
             repo_os="mac",
+            platforms_os="macos",
+            strip_prefix="jdk-" + jdk_version + "/Contents/Home",
+            suffix="tar.gz",
+        )
+    )
+    platforms.append(
+        PlatformConfig(
+            repo_os="mac",
+            repo_cpu="aarch64",
             platforms_os="macos",
             strip_prefix="jdk-" + jdk_version + "/Contents/Home",
             suffix="tar.gz",
