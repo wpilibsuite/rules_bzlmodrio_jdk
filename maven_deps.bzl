@@ -15,12 +15,12 @@ def __setup_jdk_dependencies(mctx):
     )
 
     remote_java_repository(
-        name = "roboriojdk_linux",
+        name = "roboriojdk_linux_arm64",
         prefix = "roboriojdk",
         version = "17",
         target_compatible_with = [
             "@platforms//os:linux",
-            "@platforms//cpu:aarch64",
+            "@platforms//cpu:armv7",
         ],
         sha256 = "c43688163cfdcb1a6e6fe202cc06a51891df746b954c55dbd01430e7d7326d00",
         urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.8%2B7/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.8_7.tar.gz"],
@@ -41,7 +41,7 @@ def __setup_jdk_dependencies(mctx):
     )
 
     remote_java_repository(
-        name = "roboriojdk_mac",
+        name = "roboriojdk_mac_arm64",
         prefix = "roboriojdk",
         version = "17",
         target_compatible_with = [
@@ -69,7 +69,7 @@ def __setup_jdk_dependencies(mctx):
 def setup_legacy_setup_jdk_dependencies():
     __setup_jdk_dependencies(None)
 
-    REMOTE_JDK_REPOS = ["roboriojdk_linux", "roboriojdk_mac", "roboriojdk_windows"]
+    REMOTE_JDK_REPOS = ["roboriojdk_linux", "roboriojdk_linux_arm64", "roboriojdk_mac", "roboriojdk_mac_arm64", "roboriojdk_windows"]
     [native.register_toolchains("@" + name + "_toolchain_config_repo//:all") for name in REMOTE_JDK_REPOS]
 
 deps = module_extension(
