@@ -11,7 +11,13 @@ deps = use_extension("//:maven_deps.bzl", "deps")
 
 bazel_dep(name = "rules_bzlmodrio_toolchains", version = "2024-1")
 
-REMOTE_JDK_REPOS = ["roboriojdk_linux", "roboriojdk_linux_arm64", "roboriojdk_mac", "roboriojdk_mac_arm64", "roboriojdk_windows"]
+REMOTE_JDK_REPOS = [
+    "roboriojdk_linux",
+    "roboriojdk_linux_arm64",
+    "roboriojdk_mac",
+    "roboriojdk_mac_arm64",
+    "roboriojdk_windows",
+]
 
 [use_repo(
     deps,

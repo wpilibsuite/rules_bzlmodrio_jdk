@@ -12,9 +12,9 @@ deps = use_extension("//:maven_deps.bzl", "deps")
 {{ mandatory_dependencies.rules_bzlmodrio_toolchain.module_dep() }}
 
 REMOTE_JDK_REPOS = [
-    "roboriojdk_linux",
-    "roboriojdk_mac",
-    "roboriojdk_windows",
+{%- for platform in group.platforms %}
+    "roboriojdk_{{platform.repo_os}}{% if platform.repo_cpu == "aarch64" %}_arm64{%endif%}",
+{%- endfor %}
 ]
 
 [use_repo(

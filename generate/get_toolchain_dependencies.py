@@ -3,10 +3,11 @@ from bazelrio_gentool.deps.sha256_helper import get_hash
 
 def get_toolchain_dependencies():
     class PlatformConfig:
-        def __init__(self, repo_os, platforms_os, strip_prefix, suffix, repo_cpu = "x64"):
+        def __init__(self, repo_os, repo_cpu, platforms_os, platforms_cpu, strip_prefix, suffix):
             self.repo_os = repo_os
             self.repo_cpu = repo_cpu
             self.platforms_os = platforms_os
+            self.platforms_cpu = platforms_cpu
             self.strip_prefix = strip_prefix
             self.suffix = suffix
 
@@ -46,7 +47,9 @@ def get_toolchain_dependencies():
     platforms.append(
         PlatformConfig(
             repo_os="linux",
+            repo_cpu="x64",
             platforms_os="linux",
+            platforms_cpu="x86_64",
             strip_prefix="jdk-" + jdk_version,
             suffix="tar.gz",
         )
@@ -55,7 +58,8 @@ def get_toolchain_dependencies():
         PlatformConfig(
             repo_os="linux",
             repo_cpu="aarch64",
-            platforms_os="aarch64",
+            platforms_os="linux",
+            platforms_cpu="armv7",
             strip_prefix="jdk-" + jdk_version,
             suffix="tar.gz",
         )
@@ -63,7 +67,9 @@ def get_toolchain_dependencies():
     platforms.append(
         PlatformConfig(
             repo_os="mac",
+            repo_cpu="x64",
             platforms_os="macos",
+            platforms_cpu="x86_64",
             strip_prefix="jdk-" + jdk_version + "/Contents/Home",
             suffix="tar.gz",
         )
@@ -73,6 +79,7 @@ def get_toolchain_dependencies():
             repo_os="mac",
             repo_cpu="aarch64",
             platforms_os="macos",
+            platforms_cpu="aarch64",
             strip_prefix="jdk-" + jdk_version + "/Contents/Home",
             suffix="tar.gz",
         )
@@ -80,7 +87,9 @@ def get_toolchain_dependencies():
     platforms.append(
         PlatformConfig(
             repo_os="windows",
+            repo_cpu="x64",
             platforms_os="windows",
+            platforms_cpu=None,
             strip_prefix="jdk-" + jdk_version,
             suffix="zip",
         )

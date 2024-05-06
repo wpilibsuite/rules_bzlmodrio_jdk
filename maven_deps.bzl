@@ -59,7 +59,7 @@ def __setup_jdk_dependencies(mctx):
         version = "17",
         target_compatible_with = [
             "@platforms//os:windows",
-            # Assuming JDK works for both arm and x86
+            # Assume JDK works for any CPU,
         ],
         sha256 = "341a7243778802019a100ba7ae32a05a3f4ae5fd64dbf2a970d02f07c7d1c804",
         urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.8%2B7/OpenJDK17U-jdk_x64_windows_hotspot_17.0.8_7.zip"],
@@ -69,7 +69,13 @@ def __setup_jdk_dependencies(mctx):
 def setup_legacy_setup_jdk_dependencies():
     __setup_jdk_dependencies(None)
 
-    REMOTE_JDK_REPOS = ["roboriojdk_linux", "roboriojdk_linux_arm64", "roboriojdk_mac", "roboriojdk_mac_arm64", "roboriojdk_windows"]
+    REMOTE_JDK_REPOS = [
+        "roboriojdk_linux",
+        "roboriojdk_linux_arm64",
+        "roboriojdk_mac",
+        "roboriojdk_mac_arm64",
+        "roboriojdk_windows",
+    ]
     [native.register_toolchains("@" + name + "_toolchain_config_repo//:all") for name in REMOTE_JDK_REPOS]
 
 deps = module_extension(
