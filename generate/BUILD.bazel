@@ -24,6 +24,7 @@ py_binary(
     srcs = ["publish.py"],
     visibility = ["//visibility:public"],
     deps = [
+        ":get_toolchain_dependencies",
         "@bzlmodrio-gentool//bazelrio_gentool",
     ],
 )
