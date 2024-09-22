@@ -8,10 +8,6 @@ java_test(
         "--select-package",
         "bazelrio_test",
     ],
-    env = {
-        "LD_LIBRARY_PATH": ".",
-        "PATH": ".",
-    },  # TODO fishy
     javacopts = ["-Werror"],
     jvm_flags = [
         "-Djava.library.path=.",
