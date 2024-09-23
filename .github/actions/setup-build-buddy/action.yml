@@ -25,5 +25,5 @@ runs:
       shell: bash
       run: |
           echo "API Key detected!"
-          echo "build:build_buddy --remote_header=x-buildbuddy-api-key=${{ env.API_KEY }}" > .buildbuddy-auth.rc
+          echo "build:ci --remote_header=x-buildbuddy-api-key=${{ env.API_KEY }}" > .buildbuddy-auth.rc
           echo "build:ci --remote_header=x-buildbuddy-api-key=${{ env.API_KEY }}" > tests/.buildbuddy-auth.rc
