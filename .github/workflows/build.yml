@@ -27,20 +27,24 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with: { python-version: '3.11' }
     - uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
         java-version: 17
         architecture: ${{ matrix.java_arch }}
-    - run: bazel ${{ matrix.bazel_options }} build -k ${{ matrix.config }} --config=remote @rules_bzlmodrio_jdk//...
+    - id: setup_build_buddy
+      uses: ./.github/actions/setup-build-buddy
+      with:
+        token: ${{ secrets.BUILDBUDDY_API_KEY }}
+    - run: bazel ${{ matrix.bazel_options }} build -k ${{ matrix.config }} --config=ci @rules_bzlmodrio_jdk//...
       working-directory: tests
     - name: Build and allow failure # TODO Sometimes symlinks don't get created correctly the first time around
-      run: bazel ${{ matrix.bazel_options }} build -k ${{ matrix.config }} --verbose_failures --config=remote //... || true
+      run: bazel ${{ matrix.bazel_options }} build -k ${{ matrix.config }} --verbose_failures --config=ci //... || true
       working-directory: tests
     - name: Build
-      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=remote
+      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=ci
       working-directory: tests
 
 
@@ -62,18 +66,22 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with: { python-version: '3.11' }
     - uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
         java-version: 17
         architecture: ${{ matrix.java_arch }}
+    - id: setup_build_buddy
+      uses: ./.github/actions/setup-build-buddy
+      with:
+        token: ${{ secrets.BUILDBUDDY_API_KEY }}
     - name: Build and allow failure # TODO Sometimes symlinks don't get created correctly the first time around
-      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=remote || true
+      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=ci || true
       working-directory: tests
     - name: Build
-      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=remote
+      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=ci
       working-directory: tests
 
   build_bullseye32:
@@ -94,18 +102,22 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with: { python-version: '3.11' }
     - uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
         java-version: 17
         architecture: ${{ matrix.java_arch }}
+    - id: setup_build_buddy
+      uses: ./.github/actions/setup-build-buddy
+      with:
+        token: ${{ secrets.BUILDBUDDY_API_KEY }}
     - name: Build and allow failure # TODO Sometimes symlinks don't get created correctly the first time around
-      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=remote || true
+      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=ci || true
       working-directory: tests
     - name: Build
-      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=remote
+      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=ci
       working-directory: tests
 
 
@@ -127,16 +139,20 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with: { python-version: '3.11' }
     - uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
         java-version: 17
         architecture: ${{ matrix.java_arch }}
+    - id: setup_build_buddy
+      uses: ./.github/actions/setup-build-buddy
+      with:
+        token: ${{ secrets.BUILDBUDDY_API_KEY }}
     - name: Build and allow failure # TODO Sometimes symlinks don't get created correctly the first time around
-      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=remote || true
+      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=ci || true
       working-directory: tests
     - name: Build
-      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=remote
+      run: bazel ${{ matrix.bazel_options }} ${{ matrix.command }} //... -k ${{ matrix.config }} --verbose_failures --config=ci
       working-directory: tests
