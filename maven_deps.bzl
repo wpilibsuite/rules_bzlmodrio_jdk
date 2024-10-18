@@ -64,18 +64,9 @@ def __setup_jdk_dependencies(mctx):
         sha256 = "052049d687ebfda6a4032d54afcd0da6549a23bc2ed04cfaa509746eeacbae71",
         urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.12%2B7/OpenJDK17U-jdk_x64_windows_hotspot_17.0.12_7.zip"],
         strip_prefix = "jdk-17.0.12+7",
-        patch_cmds = [
-            "cp '../rules_bzlmodrio_jdk/msvc_runtime/concrt140.dll' bin/concrt140.dll",
-            "cp '../rules_bzlmodrio_jdk/msvc_runtime/msvcp140.dll' bin/msvcp140.dll",
-            "cp '../rules_bzlmodrio_jdk/msvc_runtime/msvcp140_1.dll' bin/msvcp140_1.dll",
-            "cp '../rules_bzlmodrio_jdk/msvc_runtime/msvcp140_2.dll' bin/msvcp140_2.dll",
-            "cp '../rules_bzlmodrio_jdk/msvc_runtime/msvcp140_atomic_wait.dll' bin/msvcp140_atomic_wait.dll",
-            "cp '../rules_bzlmodrio_jdk/msvc_runtime/msvcp140_codecvt_ids.dll' bin/msvcp140_codecvt_ids.dll",
-            "cp '../rules_bzlmodrio_jdk/msvc_runtime/vccorlib140.dll' bin/vccorlib140.dll",
-            "cp '../rules_bzlmodrio_jdk/msvc_runtime/vcruntime140.dll' bin/vcruntime140.dll",
-            "cp '../rules_bzlmodrio_jdk/msvc_runtime/vcruntime140_1.dll' bin/vcruntime140_1.dll",
-            "cp '../rules_bzlmodrio_jdk/msvc_runtime/vcruntime140_threads.dll' bin/vcruntime140_threads.dll",
-        ],
+        patches = ["@rules_bzlmodrio_jdk//:0001-Fixup-runtime.patch"],
+        patch_args = ["-p1"],
+        patch_tool = "git apply",
     )
 
 def setup_legacy_setup_jdk_dependencies():
