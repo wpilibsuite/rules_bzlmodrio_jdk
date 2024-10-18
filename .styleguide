@@ -24,6 +24,7 @@ generatedFileExclude {
   BUILD.bazel
   \.jinja2$
   generate/vendor_dep.json$
+  \.dll$
 }
 
 repoRootNameOverride {
