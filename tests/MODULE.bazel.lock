@@ -139,7 +139,7 @@
     },
     "@@rules_bzlmodrio_jdk~//:maven_deps.bzl%deps": {
       "general": {
-        "bzlTransitiveDigest": "IG2l00wTRUIXqV3nI2bMCm8ZGA1l6lRfb7NcgS+fF3o=",
+        "bzlTransitiveDigest": "QQwyuMb1ES3Sn/EKuPkREFIyWDhlyAyMstqkJ2gNZMI=",
         "usagesDigest": "U+tCKAYT563wXiw5hz8oK2Hf7s4NG7RTkarVy+SX5mQ=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
@@ -209,9 +209,6 @@
               "strip_prefix": "jdk-17.0.12+7",
               "patches": [
                 "@@rules_bzlmodrio_jdk~//:0001-Fixup-runtime.patch"
-              ],
-              "patch_args": [
-                "-p1"
               ],
               "patch_tool": "git apply"
             }
