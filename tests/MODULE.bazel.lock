@@ -139,7 +139,7 @@
     },
     "@@rules_bzlmodrio_jdk~//:maven_deps.bzl%deps": {
       "general": {
-        "bzlTransitiveDigest": "y5WjAdeofPntrnVmTJ6udMhE0CHmSCaIS2kI9pGkEsw=",
+        "bzlTransitiveDigest": "IG2l00wTRUIXqV3nI2bMCm8ZGA1l6lRfb7NcgS+fF3o=",
         "usagesDigest": "U+tCKAYT563wXiw5hz8oK2Hf7s4NG7RTkarVy+SX5mQ=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
@@ -213,8 +213,7 @@
               "patch_args": [
                 "-p1"
               ],
-              "patch_tool": "git apply",
-              "patch_cmds": []
+              "patch_tool": "git apply"
             }
           },
           "roboriojdk_linux": {

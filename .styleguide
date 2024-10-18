@@ -25,6 +25,7 @@ generatedFileExclude {
   \.jinja2$
   generate/vendor_dep.json$
   \.dll$
+  \.patch$
 }
 
 repoRootNameOverride {
