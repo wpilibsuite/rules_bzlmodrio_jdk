@@ -9,9 +9,9 @@ def __setup_jdk_dependencies(mctx):
             "@platforms//os:linux",
             "@platforms//cpu:x86_64",
         ],
-        sha256 = "c25dfbc334068a48c19c44ce39ad4b8427e309ae1cfa83f23c102e78b8a6dcc0",
-        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.8.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.8.1_1.tar.gz"],
-        strip_prefix = "jdk-17.0.8.1+1",
+        sha256 = "9d4dd339bf7e6a9dcba8347661603b74c61ab2a5083ae67bf76da6285da8a778",
+        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.12%2B7/OpenJDK17U-jdk_x64_linux_hotspot_17.0.12_7.tar.gz"],
+        strip_prefix = "jdk-17.0.12+7",
     )
 
     remote_java_repository(
@@ -22,9 +22,9 @@ def __setup_jdk_dependencies(mctx):
             "@platforms//os:linux",
             "@platforms//cpu:armv7",
         ],
-        sha256 = "eefd3cf3b3dd47ff269fa5b5c10b5e096b163f4e9c1810023abdbc00dc6cc304",
-        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.8.1%2B1/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.8.1_1.tar.gz"],
-        strip_prefix = "jdk-17.0.8.1+1",
+        sha256 = "8257de06bf37f0c8f19f8d542e2ab5a4e17db3ca5f29d041bd0b02ab265db021",
+        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.12%2B7/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.12_7.tar.gz"],
+        strip_prefix = "jdk-17.0.12+7",
     )
 
     remote_java_repository(
@@ -35,9 +35,9 @@ def __setup_jdk_dependencies(mctx):
             "@platforms//os:macos",
             "@platforms//cpu:x86_64",
         ],
-        sha256 = "18be56732c1692ef131625d814dcb02ee091a43fdd6f214a33d87cc14842fc3f",
-        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.8.1%2B1/OpenJDK17U-jdk_x64_mac_hotspot_17.0.8.1_1.tar.gz"],
-        strip_prefix = "jdk-17.0.8.1+1/Contents/Home",
+        sha256 = "d5230eeec88739aa7133e4c8635bbd4ab226708c12deaafa13cf26b02bc8e8c4",
+        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.12%2B7/OpenJDK17U-jdk_x64_mac_hotspot_17.0.12_7.tar.gz"],
+        strip_prefix = "jdk-17.0.12+7/Contents/Home",
     )
 
     remote_java_repository(
@@ -48,9 +48,9 @@ def __setup_jdk_dependencies(mctx):
             "@platforms//os:macos",
             "@platforms//cpu:aarch64",
         ],
-        sha256 = "2e95eed48650f00650e963c8213b6c6ecda54458edf8d254ebc99d6a6966ffad",
-        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.8.1%2B1/OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.8.1_1.tar.gz"],
-        strip_prefix = "jdk-17.0.8.1+1/Contents/Home",
+        sha256 = "d7910b1acaeb290c5c5da21811d2b2b8635f806612a2d6e8d1953b2f77580f78",
+        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.12%2B7/OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.12_7.tar.gz"],
+        strip_prefix = "jdk-17.0.12+7/Contents/Home",
     )
 
     remote_java_repository(
@@ -61,9 +61,9 @@ def __setup_jdk_dependencies(mctx):
             "@platforms//os:windows",
             # Assume JDK works for any CPU,
         ],
-        sha256 = "651a795155dc918c06cc9fd4b37253b9cbbca5ec8e76d4a8fa7cdaeb1f52761c",
-        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.8.1%2B1/OpenJDK17U-jdk_x64_windows_hotspot_17.0.8.1_1.zip"],
-        strip_prefix = "jdk-17.0.8.1+1",
+        sha256 = "052049d687ebfda6a4032d54afcd0da6549a23bc2ed04cfaa509746eeacbae71",
+        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.12%2B7/OpenJDK17U-jdk_x64_windows_hotspot_17.0.12_7.zip"],
+        strip_prefix = "jdk-17.0.12+7",
     )
 
 def setup_legacy_setup_jdk_dependencies():
