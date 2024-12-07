@@ -66,6 +66,21 @@ def __setup_jdk_dependencies(mctx):
         strip_prefix = "jdk-17.0.12+7/Contents/Home",
     )
 
+    runtime_files = [
+        "concrt140.dll",
+        "msvcp140.dll",
+        "msvcp140_1.dll",
+        "msvcp140_2.dll",
+        "msvcp140_atomic_wait.dll",
+        "msvcp140_codecvt_ids.dll",
+        "vccorlib140.dll",
+        "vcruntime140.dll",
+        "vcruntime140_1.dll",
+        "vcruntime140_threads.dll",
+    ]
+
+    runtime_labels = [Label("@rules_bzlmodrio_jdk//msvc_runtime:" + f) for f in runtime_files]
+    win_patch_cmds = ["cp ../" + lbl.repo_name + "/msvc_runtime/" + lbl.name + " bin/" + lbl.name for lbl in runtime_labels]
     remote_java_repository(
         name = "roboriojdk_windows",
         prefix = "roboriojdk",
@@ -77,6 +92,7 @@ def __setup_jdk_dependencies(mctx):
         sha256 = "052049d687ebfda6a4032d54afcd0da6549a23bc2ed04cfaa509746eeacbae71",
         urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.12%2B7/OpenJDK17U-jdk_x64_windows_hotspot_17.0.12_7.zip"],
         strip_prefix = "jdk-17.0.12+7",
+        patch_cmds = win_patch_cmds
     )
 
 def setup_legacy_setup_jdk_dependencies():
