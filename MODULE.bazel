@@ -9,7 +9,7 @@ bazel_dep(name = "rules_java", version = "7.6.5")
 
 deps = use_extension("//:maven_deps.bzl", "deps")
 
-bazel_dep(name = "rules_bzlmodrio_toolchains", version = "2024-1.bcr1")
+bazel_dep(name = "rules_bzlmodrio_toolchains", version = "2025-1")
 
 REMOTE_JDK_REPOS = [
     "roboriojdk_linux",
