@@ -15,6 +15,19 @@ def __setup_jdk_dependencies(mctx):
     )
 
     remote_java_repository(
+        name = "roboriojdk_linux_arm32",
+        prefix = "roboriojdk",
+        version = "17",
+        target_compatible_with = [
+            "@platforms//os:linux",
+            "@platforms//cpu:armv7",
+        ],
+        sha256 = "ce7873ebf40ed0eb1089941ead4d3af79a205b1264f3162860d26ae957572b74",
+        urls = ["https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.12%2B7/OpenJDK17U-jdk_arm_linux_hotspot_17.0.12_7.tar.gz"],
+        strip_prefix = "jdk-17.0.12+7",
+    )
+
+    remote_java_repository(
         name = "roboriojdk_linux_arm64",
         prefix = "roboriojdk",
         version = "17",
@@ -71,6 +84,7 @@ def setup_legacy_setup_jdk_dependencies():
 
     REMOTE_JDK_REPOS = [
         "roboriojdk_linux",
+        "roboriojdk_linux_arm32",
         "roboriojdk_linux_arm64",
         "roboriojdk_mac",
         "roboriojdk_mac_arm64",

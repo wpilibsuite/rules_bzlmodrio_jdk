@@ -13,6 +13,7 @@ bazel_dep(name = "rules_bzlmodrio_toolchains", version = "2025-1")
 
 REMOTE_JDK_REPOS = [
     "roboriojdk_linux",
+    "roboriojdk_linux_arm32",
     "roboriojdk_linux_arm64",
     "roboriojdk_mac",
     "roboriojdk_mac_arm64",
