@@ -139,7 +139,7 @@
     },
     "@@rules_bzlmodrio_jdk~//:maven_deps.bzl%deps": {
       "general": {
-        "bzlTransitiveDigest": "7ioqtKce/6QadqNFBEuf5tiz23b1dU71qDrtAVwozkE=",
+        "bzlTransitiveDigest": "f4BC8FQ/TRkJj0yCbBRB/JGdE2I0inze09TujCDjSqU=",
         "usagesDigest": "U+tCKAYT563wXiw5hz8oK2Hf7s4NG7RTkarVy+SX5mQ=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
@@ -155,6 +155,13 @@
                 "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.12%2B7/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.12_7.tar.gz"
               ],
               "strip_prefix": "jdk-17.0.12+7"
+            }
+          },
+          "roboriojdk_linux_arm32_toolchain_config_repo": {
+            "bzlFile": "@@rules_java~//toolchains:remote_java_repository.bzl",
+            "ruleClassName": "_toolchain_config",
+            "attributes": {
+              "build_file": "\nconfig_setting(\n    name = \"prefix_version_setting\",\n    values = {\"java_runtime_version\": \"roboriojdk_17\"},\n    visibility = [\"//visibility:private\"],\n)\nconfig_setting(\n    name = \"version_setting\",\n    values = {\"java_runtime_version\": \"17\"},\n    visibility = [\"//visibility:private\"],\n)\nalias(\n    name = \"version_or_prefix_version_setting\",\n    actual = select({\n        \":version_setting\": \":version_setting\",\n        \"//conditions:default\": \":prefix_version_setting\",\n    }),\n    visibility = [\"//visibility:private\"],\n)\ntoolchain(\n    name = \"toolchain\",\n    target_compatible_with = [\"@platforms//os:linux\", \"@platforms//cpu:armv7\"],\n    target_settings = [\":version_or_prefix_version_setting\"],\n    toolchain_type = \"@bazel_tools//tools/jdk:runtime_toolchain_type\",\n    toolchain = \"@roboriojdk_linux_arm32//:jdk\",\n)\ntoolchain(\n    name = \"bootstrap_runtime_toolchain\",\n    # These constraints are not required for correctness, but prevent fetches of remote JDK for\n    # different architectures. As every Java compilation toolchain depends on a bootstrap runtime in\n    # the same configuration, this constraint will not result in toolchain resolution failures.\n    exec_compatible_with = [\"@platforms//os:linux\", \"@platforms//cpu:armv7\"],\n    target_settings = [\":version_or_prefix_version_setting\"],\n    toolchain_type = \"@bazel_tools//tools/jdk:bootstrap_runtime_toolchain_type\",\n    toolchain = \"@roboriojdk_linux_arm32//:jdk\",\n)\n"
             }
           },
           "roboriojdk_mac_toolchain_config_repo": {
@@ -183,6 +190,18 @@
               "strip_prefix": "jdk-17.0.12+7/Contents/Home"
             }
           },
+          "roboriojdk_linux_arm32": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "build_file_content": "load(\"@rules_java//java:defs.bzl\", \"java_runtime\")\n\npackage(default_visibility = [\"//visibility:public\"])\n\nexports_files([\"WORKSPACE\", \"BUILD.bazel\"])\n\nfilegroup(\n    name = \"jre\",\n    srcs = glob(\n        [\n            \"jre/bin/**\",\n            \"jre/lib/**\",\n        ],\n        allow_empty = True,\n        # In some configurations, Java browser plugin is considered harmful and\n        # common antivirus software blocks access to npjp2.dll interfering with Bazel,\n        # so do not include it in JRE on Windows.\n        exclude = [\"jre/bin/plugin2/**\"],\n    ),\n)\n\nfilegroup(\n    name = \"jdk-bin\",\n    srcs = glob(\n        [\"bin/**\"],\n        # The JDK on Windows sometimes contains a directory called\n        # \"%systemroot%\", which is not a valid label.\n        exclude = [\"**/*%*/**\"],\n    ),\n)\n\n# This folder holds security policies.\nfilegroup(\n    name = \"jdk-conf\",\n    srcs = glob(\n        [\"conf/**\"],\n        allow_empty = True,\n    ),\n)\n\nfilegroup(\n    name = \"jdk-include\",\n    srcs = glob(\n        [\"include/**\"],\n        allow_empty = True,\n    ),\n)\n\nfilegroup(\n    name = \"jdk-lib\",\n    srcs = glob(\n        [\"lib/**\", \"release\"],\n        allow_empty = True,\n        exclude = [\n            \"lib/missioncontrol/**\",\n            \"lib/visualvm/**\",\n        ],\n    ),\n)\n\njava_runtime(\n    name = \"jdk\",\n    srcs = [\n        \":jdk-bin\",\n        \":jdk-conf\",\n        \":jdk-include\",\n        \":jdk-lib\",\n        \":jre\",\n    ],\n    # Provide the 'java` binary explicitly so that the correct path is used by\n    # Bazel even when the host platform differs from the execution platform.\n    # Exactly one of the two globs will be empty depending on the host platform.\n    # When --incompatible_disallow_empty_glob is enabled, each individual empty\n    # glob will fail without allow_empty = True, even if the overall result is\n    # non-empty.\n    java = glob([\"bin/java.exe\", \"bin/java\"], allow_empty = True)[0],\n    version = 17,\n)\n\nfilegroup(\n    name = \"jdk-jmods\",\n    srcs = glob(\n        [\"jmods/**\"],\n        allow_empty = True,\n    ),\n)\n\njava_runtime(\n    name = \"jdk-with-jmods\",\n    srcs = [\n        \":jdk-bin\",\n        \":jdk-conf\",\n        \":jdk-include\",\n        \":jdk-lib\",\n        \":jdk-jmods\",\n        \":jre\",\n    ],\n    java = glob([\"bin/java.exe\", \"bin/java\"], allow_empty = True)[0],\n    version = 17,\n)\n",
+              "sha256": "ce7873ebf40ed0eb1089941ead4d3af79a205b1264f3162860d26ae957572b74",
+              "urls": [
+                "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.12%2B7/OpenJDK17U-jdk_arm_linux_hotspot_17.0.12_7.tar.gz"
+              ],
+              "strip_prefix": "jdk-17.0.12+7"
+            }
+          },
           "roboriojdk_windows_toolchain_config_repo": {
             "bzlFile": "@@rules_java~//toolchains:remote_java_repository.bzl",
             "ruleClassName": "_toolchain_config",
@@ -194,7 +213,7 @@
             "bzlFile": "@@rules_java~//toolchains:remote_java_repository.bzl",
             "ruleClassName": "_toolchain_config",
             "attributes": {
-              "build_file": "\nconfig_setting(\n    name = \"prefix_version_setting\",\n    values = {\"java_runtime_version\": \"roboriojdk_17\"},\n    visibility = [\"//visibility:private\"],\n)\nconfig_setting(\n    name = \"version_setting\",\n    values = {\"java_runtime_version\": \"17\"},\n    visibility = [\"//visibility:private\"],\n)\nalias(\n    name = \"version_or_prefix_version_setting\",\n    actual = select({\n        \":version_setting\": \":version_setting\",\n        \"//conditions:default\": \":prefix_version_setting\",\n    }),\n    visibility = [\"//visibility:private\"],\n)\ntoolchain(\n    name = \"toolchain\",\n    target_compatible_with = [\"@platforms//os:linux\", \"@platforms//cpu:armv7\"],\n    target_settings = [\":version_or_prefix_version_setting\"],\n    toolchain_type = \"@bazel_tools//tools/jdk:runtime_toolchain_type\",\n    toolchain = \"@roboriojdk_linux_arm64//:jdk\",\n)\ntoolchain(\n    name = \"bootstrap_runtime_toolchain\",\n    # These constraints are not required for correctness, but prevent fetches of remote JDK for\n    # different architectures. As every Java compilation toolchain depends on a bootstrap runtime in\n    # the same configuration, this constraint will not result in toolchain resolution failures.\n    exec_compatible_with = [\"@platforms//os:linux\", \"@platforms//cpu:armv7\"],\n    target_settings = [\":version_or_prefix_version_setting\"],\n    toolchain_type = \"@bazel_tools//tools/jdk:bootstrap_runtime_toolchain_type\",\n    toolchain = \"@roboriojdk_linux_arm64//:jdk\",\n)\n"
+              "build_file": "\nconfig_setting(\n    name = \"prefix_version_setting\",\n    values = {\"java_runtime_version\": \"roboriojdk_17\"},\n    visibility = [\"//visibility:private\"],\n)\nconfig_setting(\n    name = \"version_setting\",\n    values = {\"java_runtime_version\": \"17\"},\n    visibility = [\"//visibility:private\"],\n)\nalias(\n    name = \"version_or_prefix_version_setting\",\n    actual = select({\n        \":version_setting\": \":version_setting\",\n        \"//conditions:default\": \":prefix_version_setting\",\n    }),\n    visibility = [\"//visibility:private\"],\n)\ntoolchain(\n    name = \"toolchain\",\n    target_compatible_with = [\"@platforms//os:linux\", \"@platforms//cpu:arm64\"],\n    target_settings = [\":version_or_prefix_version_setting\"],\n    toolchain_type = \"@bazel_tools//tools/jdk:runtime_toolchain_type\",\n    toolchain = \"@roboriojdk_linux_arm64//:jdk\",\n)\ntoolchain(\n    name = \"bootstrap_runtime_toolchain\",\n    # These constraints are not required for correctness, but prevent fetches of remote JDK for\n    # different architectures. As every Java compilation toolchain depends on a bootstrap runtime in\n    # the same configuration, this constraint will not result in toolchain resolution failures.\n    exec_compatible_with = [\"@platforms//os:linux\", \"@platforms//cpu:arm64\"],\n    target_settings = [\":version_or_prefix_version_setting\"],\n    toolchain_type = \"@bazel_tools//tools/jdk:bootstrap_runtime_toolchain_type\",\n    toolchain = \"@roboriojdk_linux_arm64//:jdk\",\n)\n"
             }
           },
           "roboriojdk_windows": {
@@ -343,6 +362,186 @@
           }
         },
         "recordedRepoMappingEntries": []
+      }
+    },
+    "@@rules_bzlmodrio_toolchains~//:maven_deps.bzl%deps": {
+      "general": {
+        "bzlTransitiveDigest": "PYkNyj+XbBQvHPPHyChfAG63ZQcZiGabDgJ03LgU3ck=",
+        "usagesDigest": "KhLKV6SJsChc6iV+S5gik/IBA1F3oZeGedOAcKwy2iU=",
+        "recordedFileInputs": {},
+        "recordedDirentsInputs": {},
+        "envVariables": {},
+        "generatedRepoSpecs": {
+          "bazelrio_raspi_32_toolchain_linux": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/armhf-raspi-bullseye-2025-x86_64-linux-gnu-Toolchain-10.2.0.tgz",
+              "sha256": "b53465a8d36de937a0f88299f8ab3a97db5af3cdf4f7e52473bf294c5c1da3f6",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_bookworm_32_toolchain_linux": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/armhf-bookworm-2025-x86_64-linux-gnu-Toolchain-12.2.0.tgz",
+              "sha256": "3a0d0b350c359c8a46ce58e654ba4d5e97177833f0181792151401fe110aac32",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_bullseye_32_toolchain_linux": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/armhf-bullseye-2025-x86_64-linux-gnu-Toolchain-10.2.0.tgz",
+              "sha256": "1cfedd017bab157881f5f81b785152033269e02d4fe72e0c36957263d145041b",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_roborio_toolchain_linux": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/cortexa9_vfpv3-roborio-academic-2025-x86_64-linux-gnu-Toolchain-12.1.0.tgz",
+              "sha256": "0ed7c454eab947166c41177f72f795a408f4b7c5fc0f7fd6ee35dba1871fbfac",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_bullseye_64_toolchain_windows": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/arm64-bullseye-2025-x86_64-w64-mingw32-Toolchain-10.2.0.zip",
+              "sha256": "d978c2baa757571b3cb413844f3fa26b779259a4f8a680fb2fb872a13c8618b3",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_bullseye_32_toolchain_macos": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/armhf-bullseye-2025-x86_64-apple-darwin-Toolchain-10.2.0.tgz",
+              "sha256": "d46d8191b8ad04494439bf4d14dc599d8531552e56f25dcd7949dc9cf7b0d512",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_bullseye_64_toolchain_linux": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/arm64-bullseye-2025-x86_64-linux-gnu-Toolchain-10.2.0.tgz",
+              "sha256": "df3b1fa4ca83d61e853fa32620ede3f2402dc3b6088653c1ae85714cd5c566ed",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_bookworm_32_toolchain_windows": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/armhf-bookworm-2025-x86_64-w64-mingw32-Toolchain-12.2.0.zip",
+              "sha256": "d0af53f4191d09c36ba189d9e20d9524dc164847c8c39e4f5ca961fe8d5eb056",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_bookworm_32_toolchain_macos": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/armhf-bookworm-2025-x86_64-apple-darwin-Toolchain-12.2.0.tgz",
+              "sha256": "633fccbe1508478b095a03a05477795825971cdac0860bf3a0f79f5be2f73a5a",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_bullseye_32_toolchain_windows": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/armhf-bullseye-2025-x86_64-w64-mingw32-Toolchain-10.2.0.zip",
+              "sha256": "6d2d6684ffc8791d2a261fb8ed8b92d8c00408f0b24dcd5557ed3aebdd096c15",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_bookworm_64_toolchain_linux": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/arm64-bookworm-2025-x86_64-linux-gnu-Toolchain-12.2.0.tgz",
+              "sha256": "d94005ae516bb43fc85a07ed89cb51bec96ed931ca5c084427f1432a1dbf71e9",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_roborio_toolchain_macos": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/cortexa9_vfpv3-roborio-academic-2025-x86_64-apple-darwin-Toolchain-12.1.0.tgz",
+              "sha256": "5d7021faa2745227adf04ad31f90c64f2b89527dac4283f5a28c0d5c8a227816",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_bookworm_64_toolchain_windows": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/arm64-bookworm-2025-x86_64-w64-mingw32-Toolchain-12.2.0.zip",
+              "sha256": "50f26a9b0ae595bd536f5b7003a465b04871005cbe57c18e84f657e83df13f4c",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_raspi_32_toolchain_windows": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/armhf-raspi-bullseye-2025-x86_64-w64-mingw32-Toolchain-10.2.0.zip",
+              "sha256": "4a891d7a5de1fc3cd03f60b4340f586ad2750fef8baab35c408e23fa539a0213",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_roborio_toolchain_windows": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/cortexa9_vfpv3-roborio-academic-2025-x86_64-w64-mingw32-Toolchain-12.1.0.zip",
+              "sha256": "1395ae04cf5c617683ff8eb473c949740a6bb57c9405668f179c7206ab6ba3f8",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_bookworm_64_toolchain_macos": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/arm64-bookworm-2025-x86_64-apple-darwin-Toolchain-12.2.0.tgz",
+              "sha256": "34af7c9b601bbce1fe5c5e07f70fe8abd7ed3985cc603dbc12ef7f3d8c2f0b9d",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_bullseye_64_toolchain_macos": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/arm64-bullseye-2025-x86_64-apple-darwin-Toolchain-10.2.0.tgz",
+              "sha256": "d0b581e3962b4d23d720ff982e2df05ba516329b135a6b09e5bf292b114aac2b",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          },
+          "bazelrio_raspi_32_toolchain_macos": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_archive",
+            "attributes": {
+              "url": "https://github.com/wpilibsuite/opensdk/releases/download/v2025-1/armhf-raspi-bullseye-2025-x86_64-apple-darwin-Toolchain-10.2.0.tgz",
+              "sha256": "e205a4824a0d6704e968184e52525c5fa200b3e2278177a80d970b2077896f74",
+              "build_file_content": "filegroup(\n    name = \"all\",\n    srcs = glob([\"**\"]),\n    visibility = [\"//visibility:public\"],\n)\n"
+            }
+          }
+        },
+        "recordedRepoMappingEntries": [
+          [
+            "rules_bzlmodrio_toolchains~",
+            "bazel_tools",
+            "bazel_tools"
+          ]
+        ]
       }
     },
     "@@rules_jvm_external~//:extensions.bzl%maven": {
